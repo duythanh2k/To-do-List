@@ -1,26 +1,28 @@
-import {
-  Controller,
-  Post,
-  UseGuards,
-  Request,
-  Response,
-} from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './local-auth.guard';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Request } from "@nestjs/common";
+import { AuthService } from "./auth.service";
+import { SignInDto } from "./dto/signin.dto";
+import { SignUpDto } from "./dto/signup.dto";
+import { SkipAuth } from "./auth.decorator";
 
 @Controller()
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private authService: AuthService) {}
 
-  @Post('login')
-  @UseGuards(LocalAuthGuard) // ensures LocalAuthGuard is run when this route hitted
-  async login(@Request() req, @Response() res) {
-    try {
-      const accessToken = this.authService.signin(req.user);
-      // make requests to login function and we should get our accessToken back in return
-      return res.status(200).json(accessToken);
-    } catch (err) {
-      return res.status(403);
-    }
+  @Post("register")
+  @SkipAuth()
+  signUp(@Body() signUpDto: SignUpDto) {
+    return this.authService.signUp(signUpDto.username, signUpDto.password);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post("login")
+  @SkipAuth()
+  signIn(@Body() signInDto: SignInDto) {
+    return this.authService.signIn(signInDto.username, signInDto.password);
+  }
+
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
   }
 }
