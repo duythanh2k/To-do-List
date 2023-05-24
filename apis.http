@@ -53,13 +53,13 @@ Authorization: Bearer {{token}}
 
 ### Search Task
 # @name search
-GET {{host}}/tasks/5
+GET {{host}}/tasks/4
 content-type: {{contentType}}
 Authorization: Bearer {{token}}
 
 ### Update Task
 # @name update
-PATCH {{host}}/tasks/5
+PATCH {{host}}/tasks/2
 content-type: {{contentType}}
 Authorization: Bearer {{token}}
 
@@ -72,6 +72,6 @@ Authorization: Bearer {{token}}
 
 ### Delete Task
 # @name delete
-DELETE {{host}}/tasks/5
+DELETE {{host}}/tasks/1
 content-type: {{contentType}}
 Authorization: Bearer {{token}}
