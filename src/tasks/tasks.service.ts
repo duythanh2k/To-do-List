@@ -1,6 +1,4 @@
 import { Injectable } from "@nestjs/common";
-import { CreateTaskDto } from "./dto/create-task.dto";
-import { UpdateTaskDto } from "./dto/update-task.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { Prisma } from "@prisma/client";
 
@@ -25,8 +23,8 @@ export class TasksService {
     return this.prisma.task.findMany({ where: { user_id } });
   }
 
-  findCompleted(user_id: number) {
-    return this.prisma.task.findMany({ where: { user_id, is_done: true } });
+  findCompleted() {
+    return this.prisma.task.findMany();
   }
 
   findOne(id: number) {

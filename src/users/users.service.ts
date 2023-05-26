@@ -15,4 +15,10 @@ export class UsersService {
       where: findUniqueUserArgs,
     });
   }
+
+  async findByUsername(username: string) {
+    return this.prisma.user.findUnique({
+      where: { username },
+    });
+  }
 }

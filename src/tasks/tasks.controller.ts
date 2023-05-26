@@ -1,10 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
 import { Prisma, User as UserModel } from '@prisma/client';
 import { User } from 'src/users/users.decorator';
 import { TasksGuard } from './tasks.guard';
+import { SkipAuth } from 'src/auth/auth.decorator';
 
 @Controller('tasks')
 @UseGuards(TasksGuard)
@@ -20,10 +19,11 @@ export class TasksController {
   findAll(@User() user_id: string) {
     return this.tasksService.findAll(+user_id);
   }
-
+  
   @Get('done')
-  findCompleted(@User() user_id: string) {
-    return this.tasksService.findCompleted(+user_id);
+  @SkipAuth()
+  findCompleted() {
+    return this.tasksService.findCompleted();
   }
 
   @Get(':id')
