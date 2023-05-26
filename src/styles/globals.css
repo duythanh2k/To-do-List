@@ -16,12 +16,35 @@
   }
 }
 
+* {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 20px;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
+  background: linear-gradient(to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+}
+
+@font-face {
+  font-family: 'Josefin Sans';
+  src: url('../../public/fonts/JosefinSans-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Josefin Sans';
+  src: url('../../public/fonts/JosefinSans-Bold.ttf');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Josefin Sans';
+  src: url('../../public/fonts/JosefinSans-Italic.ttf');
+  font-weight: normal;
+  font-style: italic;
 }
