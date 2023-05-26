@@ -31,7 +31,7 @@ export default function TaskManagementPage() {
     }
   };
 
-  const handleAddTodo = async (title: string) => {
+  const handleAddTask = async (title: string) => {
     try {
       // Send a POST request to your create todo API with the new todo data
       const res = await axios.post(
@@ -57,7 +57,7 @@ export default function TaskManagementPage() {
     }
   };
 
-  const handleUpdateTodo = async (task_id: number, is_done: boolean) => {
+  const handleUpdateTask = async (task_id: number, is_done: boolean) => {
     try {
       // Send a PATCH request to your update todo API with the updated data for a specific todo
       const res = await axios.patch(
@@ -85,9 +85,26 @@ export default function TaskManagementPage() {
     }
   };
 
-  const handleDeleteTodo = async (todoId) => {
-    // Send a DELETE request to your delete todo API for a specific todo
-    // Upon successful deletion, update the todos state variable by removing the deleted todo
+  const handleDeleteTask = async (task_id: number) => {
+    try {
+      // Send a DELETE request to your delete todo API for a specific todo
+      const res = await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/tasks/${task_id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+      // Upon successful deletion, update the todos state variable by removing the deleted todo
+      if (res.status === 200) {
+        const updatedTodos = tasks.filter((task) => task.task_id !== task_id);
+        setTasks(updatedTodos);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleMainInputChange = async (evt: any) => {
@@ -97,7 +114,7 @@ export default function TaskManagementPage() {
   const handleKeyDown = async (evt: any) => {
     if (evt.key === "Enter") {
       if (mainInput.length > 0) {
-        handleAddTodo(mainInput);
+        handleAddTask(mainInput);
         setMainInput("");
       }
     }
@@ -112,9 +129,12 @@ export default function TaskManagementPage() {
           <li key={task.task_id}>
             {task.title}
             <button
-              onClick={() => handleUpdateTodo(task.task_id, !task.is_done)}
+              onClick={() => handleUpdateTask(task.task_id, !task.is_done)}
             >
               Mark as {task.is_done ? "Progress" : "Done"}
+            </button>
+            <button onClick={() => handleDeleteTask(task.task_id)}>
+              Delete
             </button>
           </li>
         ))}
