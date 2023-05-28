@@ -6,9 +6,9 @@ export default function Home() {
 
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24`}
+      className={`flex flex-col items-center justify-between p-24 h-2/3`}
     >
-      <div className="relative flex place-items-center after:absolute after:-z-20 after:h-[200px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[600px]">
+      <div className="relative flex place-items-center after:absolute after:-z-20 after:h-[200px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-52">
         <Image
           className="relative"
           src="/to-do.png"
@@ -19,7 +19,7 @@ export default function Home() {
         />
       </div>
 
-      <div className="flex justify-between w-64">
+      <div className="flex justify-between w-1/3 h-3/5">
         <Link href="/auth/signup">
           <button className="border-0 rounded-lg p-4 bg-gradient-to-r from-indigo-800 hover:bg-gradient-to-r hover:from-black hover:via-sky-700 hover:to-sky-500 text-xl">
             Sign Up

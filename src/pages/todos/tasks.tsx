@@ -1,11 +1,14 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { BsFillCheckSquareFill, BsHourglassSplit } from "react-icons/bs";
+import { FaTrashAlt } from "react-icons/fa";
 
 export default function TaskManagementPage() {
   const router = useRouter();
   const [tasks, setTasks] = useState([]);
   const [mainInput, setMainInput] = useState("");
+  const scrollRef = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -99,7 +102,9 @@ export default function TaskManagementPage() {
       );
       // Upon successful deletion, update the todos state variable by removing the deleted todo
       if (res.status === 200) {
-        const updatedTodos = tasks.filter((task) => task.task_id !== task_id);
+        const updatedTodos = tasks.filter(
+          (task: any) => task.task_id !== task_id
+        );
         setTasks(updatedTodos);
       }
     } catch (error) {
@@ -120,34 +125,51 @@ export default function TaskManagementPage() {
     }
   };
 
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [tasks]);
+
   return (
-    <div>
-      <h1>Todo List</h1>
-      {/* Render the list of todos */}
-      <ul>
-        {tasks.map((task: any) => (
-          <li key={task.task_id}>
-            {task.title}
-            <button
-              onClick={() => handleUpdateTask(task.task_id, !task.is_done)}
-            >
-              Mark as {task.is_done ? "Progress" : "Done"}
-            </button>
-            <button onClick={() => handleDeleteTask(task.task_id)}>
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
-      {/* Add todo input and button */}
-      <input
-        className="text-black"
-        type="text"
-        placeholder="What's next?"
-        value={mainInput}
-        onChange={(evt: any) => handleMainInputChange(evt)}
-        onKeyDown={handleKeyDown}
-      />
+    <div className="flex justify-center align-top">
+      <div className="flex flex-col w-5/12 h-screen relative">
+        {/* Render the list of todos */}
+        <div className="scroll absolute w-full top-4 h-5/6 overflow-auto">
+          <ul>
+            {tasks.map((task: any) => (
+              <li key={task.task_id}>
+                <div className="flex justify-between bg-slate-200 text-black mb-5 p-3 rounded-md shadow-md shadow-black">
+                  <span className="font-bold text-xl">{task.title}</span>
+                  <div className="flex justify-between w-2/12">
+                    <button
+                      onClick={() =>
+                        handleUpdateTask(task.task_id, !task.is_done)
+                      }
+                    >
+                      {task.is_done ? (
+                        <BsHourglassSplit className="text-yellow-600 text-2xl" />
+                      ) : (
+                        <BsFillCheckSquareFill className="text-green-700 text-xl" />
+                      )}
+                    </button>
+                    <button onClick={() => handleDeleteTask(task.task_id)}>
+                      <FaTrashAlt className="text-red-700 text-xl" />
+                    </button>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* Add todo input and button */}
+        <input
+          className="text-black p-3 rounded-md shadow-inner shadow-black absolute w-full bottom-4"
+          type="text"
+          placeholder="What's next?"
+          value={mainInput}
+          onChange={(evt: any) => handleMainInputChange(evt)}
+          onKeyDown={handleKeyDown}
+        />
+      </div>
     </div>
   );
 }

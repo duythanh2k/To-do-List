@@ -48,3 +48,17 @@ body {
   font-weight: normal;
   font-style: italic;
 }
+
+.scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Handle */
+.scroll::-webkit-scrollbar-thumb {
+  background: rgb(190, 190, 190); 
+  border-radius: 10px;
+}
+/* Handle on hover */
+.scroll::-webkit-scrollbar-thumb:hover {
+  background: rgb(150, 150, 150); 
+}
