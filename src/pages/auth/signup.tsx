@@ -12,19 +12,19 @@ export default function SignUp() {
     evt.preventDefault();
 
     try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/register`,
-        {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
           username,
           password,
         }
       );
-      const token = res.data;
+      const token = res.data.access_token;
       // Store the token in local storage or other secure storage
       localStorage.setItem("token", token);
       // Redirect to the todo page after successfully authorized
       router.push('/todos/tasks', undefined, { shallow: true });
     } catch (error) {
+      setUsername("");
+      setPassword("");
       console.error(error);
     }
   };
@@ -57,7 +57,7 @@ export default function SignUp() {
             />
             <div className="flex justify-center top-3/4">
               <button
-                className="w-3/12 p-2 rounded-full bg-gradient-to-r from-indigo-600 hover:bg-gradient-to-r hover:from-slate-200 hover:via-sky-500 hover:to-sky-700 text-black"
+                className="w-3/12 p-2 rounded-full bg-gradient-to-r from-indigo-600 hover:bg-gradient-to-r hover:from-transparent hover:to-sky-700 text-black"
                 type="submit"
               >
                 Sign Up
@@ -67,7 +67,7 @@ export default function SignUp() {
               className="text-center text-sky-500 hover:underline italic"
               href="/auth/signin"
             >
-              Already have account
+              Already have account!
             </a>
           </form>
         </div>

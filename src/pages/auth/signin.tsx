@@ -23,6 +23,7 @@ export default function SignIn() {
       router.push('/todos/tasks', undefined, { shallow: true });
     } catch (error) {
       setError('Invalid username or password.');
+      setPassword("");
       console.error(error);
     }
   };
@@ -55,7 +56,7 @@ export default function SignIn() {
             />
             <div className="flex justify-center top-3/4">
               <button
-                className="w-3/12 p-2 rounded-full bg-gradient-to-r from-teal-600 hover:bg-gradient-to-r hover:from-slate-200 hover:via-green-500 hover:to-green-800 text-black"
+                className="w-3/12 p-2 rounded-full bg-gradient-to-r from-teal-600 hover:bg-gradient-to-r hover:from-transparent hover:to-green-800 text-black"
                 type="submit"
               >
                 Sign In
@@ -64,7 +65,7 @@ export default function SignIn() {
             <p className="text-black italic">
               Don't have account yet?{" "}
               <a className="text-sky-500 hover:underline" href="/auth/signup">
-                Create now
+                Create now!
               </a>
             </p>
           </form>

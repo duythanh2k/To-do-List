@@ -4,15 +4,15 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 25, 0, 51;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background-end-rgb: 25, 0, 51;
   }
 }
 
@@ -55,10 +55,11 @@ body {
 
 /* Handle */
 .scroll::-webkit-scrollbar-thumb {
-  background: rgb(190, 190, 190); 
+  background: rgb(190, 190, 190);
   border-radius: 10px;
 }
+
 /* Handle on hover */
 .scroll::-webkit-scrollbar-thumb:hover {
-  background: rgb(150, 150, 150); 
+  background: rgb(150, 150, 150);
 }
