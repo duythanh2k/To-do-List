@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { UsersService } from 'src/users/users.service'
 import * as bcrypt from 'bcrypt'
@@ -10,27 +10,29 @@ export class AuthService {
         private jwtService: JwtService
     ) {}
 
-    async signUp(username: string, pass: string) {
+    async signUp(username: string, pass: string): Promise<{ message: string; statusCode: number }> {
+        const existedUser = await this.usersService.findByUsername(username)
+        if (existedUser) {
+            throw new BadRequestException()
+        }
+
         const hashedPassword = await bcrypt.hash(pass, 10)
-        const user = await this.usersService.create({
+        await this.usersService.create({
             username,
             password: hashedPassword,
         })
-        const payload = { sub: user.user_id, username: user.username }
-        return {
-            access_token: await this.jwtService.signAsync(payload),
-        }
+        return { message: 'User has successfully created!', statusCode: HttpStatus.CREATED }
     }
 
     async signIn(username: string, pass: string) {
         const user = await this.usersService.findOne({ username })
         if (!user || !user?.password) {
-            throw new UnauthorizedException()
+            throw new BadRequestException()
         }
 
         const isPasswordMatch = await bcrypt.compare(pass, user.password)
         if (!isPasswordMatch) {
-            throw new UnauthorizedException()
+            throw new BadRequestException()
         }
         const payload = { sub: user.user_id, username: user.username }
         return {
