@@ -50,7 +50,7 @@ export default function TaskManagementPage() {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization:
-                            'Bearer ' + localStorage.getItem('token'),
+                            'Bearer ' + localStorage.getItem('access_token'),
                     },
                 }
             )
@@ -73,7 +73,7 @@ export default function TaskManagementPage() {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization:
-                            'Bearer ' + localStorage.getItem('token'),
+                            'Bearer ' + localStorage.getItem('access_token'),
                     },
                 }
             )
@@ -100,7 +100,7 @@ export default function TaskManagementPage() {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization:
-                            'Bearer ' + localStorage.getItem('token'),
+                            'Bearer ' + localStorage.getItem('access_token'),
                     },
                 }
             )
@@ -124,7 +124,7 @@ export default function TaskManagementPage() {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization:
-                            'Bearer ' + localStorage.getItem('token'),
+                            'Bearer ' + localStorage.getItem('access_token'),
                     },
                 }
             )
@@ -146,7 +146,7 @@ export default function TaskManagementPage() {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization:
-                            'Bearer ' + localStorage.getItem('token'),
+                            'Bearer ' + localStorage.getItem('access_token'),
                     },
                 }
             )
@@ -170,7 +170,7 @@ export default function TaskManagementPage() {
     }
 
     const logout = () => {
-        localStorage.removeItem('token')
+        localStorage.removeItem('access_token')
         router.push('/', undefined, { shallow: true })
     }
 

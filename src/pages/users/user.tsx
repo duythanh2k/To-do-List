@@ -19,7 +19,7 @@ export default function User() {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization:
-                            'Bearer ' + localStorage.getItem('token'),
+                            'Bearer ' + localStorage.getItem('access_token'),
                     },
                 }
             )

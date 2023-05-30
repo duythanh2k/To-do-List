@@ -21,7 +21,7 @@ export default function SignUp() {
             )
             const token = res.data.access_token
             // Store the token in local storage or other secure storage
-            localStorage.setItem('token', token)
+            localStorage.setItem('access_token', token)
             // Redirect to the todo page after successfully authorized
             router.push('/todos/tasks', undefined, { shallow: true })
         } catch (error) {
