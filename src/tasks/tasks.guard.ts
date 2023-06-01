@@ -1,4 +1,9 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
+import {
+    CanActivate,
+    ExecutionContext,
+    Injectable,
+    NotFoundException,
+} from '@nestjs/common'
 import { TasksService } from './tasks.service'
 
 @Injectable()
@@ -14,6 +19,9 @@ export abstract class TasksGuard implements CanActivate {
         }
 
         const todo = await this.tasksService.findOne(+params?.id)
-        return todo.user_id === user.sub
+        if (!todo || todo.user_id !== user.sub) {
+            throw new NotFoundException()
+        }
+        return true
     }
 }
