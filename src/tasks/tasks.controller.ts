@@ -20,33 +20,33 @@ export class TasksController {
     constructor(private readonly tasksService: TasksService) {}
 
     @Post()
-    create(@User() user_id: string, @Body() task: Prisma.TaskCreateInput) {
-        return this.tasksService.create(+user_id, task)
+    async create(@User() user_id: string, @Body() task: Prisma.TaskCreateInput) {
+        return await this.tasksService.create(+user_id, task)
     }
 
     @Get()
-    findAll(@User() user_id: string) {
-        return this.tasksService.findAll(+user_id)
+    async findAll(@User() user_id: string) {
+        return await this.tasksService.findAll(+user_id)
     }
 
     @Get('done')
     @SkipAuth()
-    findCompleted() {
-        return this.tasksService.findCompleted()
+    async findCompleted() {
+        return await this.tasksService.findCompleted()
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.tasksService.findOne(+id)
+    async findOne(@Param('id') id: string) {
+        return await this.tasksService.findOne(+id)
     }
 
     @Patch(':id')
-    update(@Param('id') id: string, @Body() task: Prisma.TaskUpdateInput) {
-        return this.tasksService.update(+id, task)
+    async update(@Param('id') id: string, @Body() task: Prisma.TaskUpdateInput) {
+        return await this.tasksService.update(+id, task)
     }
 
     @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.tasksService.remove(+id)
+    async remove(@Param('id') id: string) {
+        return await this.tasksService.remove(+id)
     }
 }
