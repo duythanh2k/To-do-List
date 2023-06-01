@@ -1,6 +1,6 @@
-import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { apiCall } from '../api/apiCall'
 
 export default function SignUp() {
     const router = useRouter()
@@ -12,22 +12,13 @@ export default function SignUp() {
         evt.preventDefault()
 
         try {
-            const res = await axios.post(
-                `${process.env.NEXT_PUBLIC_API_URL}/register`,
-                {
-                    username,
-                    password,
-                }
-            )
-            const token = res.data.access_token
-            // Store the token in local storage or other secure storage
-            localStorage.setItem('access_token', token)
-            // Redirect to the todo page after successfully authorized
-            router.push('/todos/tasks', undefined, { shallow: true })
+            await apiCall('POST', 'register', { username, password, }, false)
+            // Redirect to the login page after successfully register
+            router.push('/auth/signin', undefined, { shallow: true })
         } catch (error) {
             setUsername('')
             setPassword('')
-            console.error(error)
+            setError('User has already existed!')
         }
     }
 
@@ -39,7 +30,7 @@ export default function SignUp() {
                         className="flex flex-col justify-between align-middle w-11/12 pt-8 pb-4"
                         onSubmit={handleSubmit}
                     >
-                        {error && <p>{error}</p>}
+                        {error && <p className='text-red-600'>{error}</p>}
                         <h1 className="text-center text-4xl text-black font-bold">
                             Register
                         </h1>

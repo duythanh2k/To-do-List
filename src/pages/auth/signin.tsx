@@ -1,6 +1,7 @@
-import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { apiCall } from '../api/apiCall'
+import axios from 'axios'
 
 export default function SignIn() {
     const router = useRouter()
@@ -12,22 +13,20 @@ export default function SignIn() {
         evt.preventDefault()
 
         try {
-            const res = await axios.post(
-                `${process.env.NEXT_PUBLIC_API_URL}/login`,
-                {
-                    username,
-                    password,
-                }
-            )
-            const token = res.data.access_token
+            const loginData = await apiCall('POST', 'login', { username, password, }, false)
+            // const res = await axios({
+                // method: 'POST',
+                // url: `${process.env.NEXT_PUBLIC_API_URL}/login`,
+                // data: {username, password}
+            // })
+            const token = loginData.access_token
             // Store the token in local storage or other secure storage
             localStorage.setItem('access_token', token)
             // Redirect to the todo page after successfully authorized
             router.push('/todos/tasks', undefined, { shallow: true })
         } catch (error) {
-            setError('Invalid username or password.')
             setPassword('')
-            console.error(error)
+            setError('Invalid username or password!')
         }
     }
 
@@ -39,7 +38,7 @@ export default function SignIn() {
                         className="flex flex-col justify-between align-middle w-11/12 pt-8 pb-4"
                         onSubmit={handleSubmit}
                     >
-                        {error && <p>{error}</p>}
+                        {error && <p className='text-red-600'>{error}</p>}
                         <h1 className="text-center text-4xl text-black font-bold">
                             Login
                         </h1>

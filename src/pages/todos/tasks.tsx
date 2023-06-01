@@ -1,8 +1,8 @@
-import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import { BsFillCheckSquareFill, BsHourglassSplit } from 'react-icons/bs'
 import { FaTrashAlt, FaUser, FaUserInjured } from 'react-icons/fa'
+import { apiCall } from '../api/apiCall'
 
 // Define data type
 type User = {
@@ -44,17 +44,8 @@ export default function TaskManagementPage() {
 
     const getTasks = async () => {
         try {
-            const res = await axios.get(
-                `${process.env.NEXT_PUBLIC_API_URL}/tasks`,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization:
-                            'Bearer ' + localStorage.getItem('access_token'),
-                    },
-                }
-            )
-            setTasks(res.data)
+            const tasksFetched = await apiCall('GET', 'tasks', null, true)
+            setTasks(tasksFetched)
             isNewTaskAdded.current = true
         } catch (error) {
             console.error(error)
@@ -64,22 +55,9 @@ export default function TaskManagementPage() {
     const handleAddTask = async (title: string) => {
         try {
             // Send a POST request to your create todo API with the new todo data
-            const res = await axios.post(
-                `${process.env.NEXT_PUBLIC_API_URL}/tasks`,
-                {
-                    title: title,
-                },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization:
-                            'Bearer ' + localStorage.getItem('access_token'),
-                    },
-                }
-            )
+            const newTask = await apiCall('POST', 'tasks', { title }, true)
 
             // Upon successful creation, update the todos state variable with the newly created todo
-            const newTask = res.data
             const copy = [...tasks, newTask]
             setTasks(copy)
             isNewTaskAdded.current = true
@@ -91,21 +69,8 @@ export default function TaskManagementPage() {
     const handleUpdateTask = async (task_id: number, is_done: boolean) => {
         try {
             // Send a PATCH request to your update todo API with the updated data for a specific todo
-            const res = await axios.patch(
-                `${process.env.NEXT_PUBLIC_API_URL}/tasks/${task_id}`,
-                {
-                    is_done,
-                },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization:
-                            'Bearer ' + localStorage.getItem('access_token'),
-                    },
-                }
-            )
+            const updatedTask = await apiCall('PATCH', `tasks/${task_id}`, { is_done }, true)
             // Upon successful update, update the todos state variable with the modified todo
-            const updatedTask = res.data
             const updatedTodos = tasks.map((task) =>
                 task.task_id === updatedTask.task_id ? updatedTask : task
             )
@@ -118,16 +83,7 @@ export default function TaskManagementPage() {
     const handleDeleteTask = async (task_id: number) => {
         try {
             // Send a DELETE request to your delete todo API for a specific todo
-            const res = await axios.delete(
-                `${process.env.NEXT_PUBLIC_API_URL}/tasks/${task_id}`,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization:
-                            'Bearer ' + localStorage.getItem('access_token'),
-                    },
-                }
-            )
+            await apiCall('DELETE', `tasks/${task_id}`, null, true)
             // Upon successful deletion, update the todos state variable by removing the deleted todo
             const updatedTodos = tasks.filter(
                 (task) => task.task_id !== task_id
@@ -140,17 +96,8 @@ export default function TaskManagementPage() {
 
     const getUser = async () => {
         try {
-            const res = await axios.get(
-                `${process.env.NEXT_PUBLIC_API_URL}/profile`,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization:
-                            'Bearer ' + localStorage.getItem('access_token'),
-                    },
-                }
-            )
-            setProfile(res.data)
+            const user = await apiCall('GET', 'profile', null, true)
+            setProfile(user)
         } catch (error) {
             console.error(error)
         }
