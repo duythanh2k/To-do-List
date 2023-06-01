@@ -1,15 +1,12 @@
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import { BsFillCheckSquareFill, BsHourglassSplit } from 'react-icons/bs'
-import { FaTrashAlt, FaUser, FaUserInjured } from 'react-icons/fa'
+import { FaTrashAlt } from 'react-icons/fa'
 import { apiCall } from '../api/apiCall'
 
+import UserLayout from '../../components/layout-authenticated'
+
 // Define data type
-type User = {
-    user_id: number
-    username: string
-    password: string
-}
 type Task = {
     task_id: number
     title: string
@@ -21,16 +18,13 @@ type Task = {
 
 export default function TaskManagementPage() {
     const router = useRouter()
-    const [profile, setProfile] = useState<User>()
     const [tasks, setTasks] = useState<Task[]>([])
     const [mainInput, setMainInput] = useState('')
-    const [isVisible, setIsVisible] = useState(false)
     const scrollRef = useRef<null | HTMLDivElement>(null)
     const isNewTaskAdded = useRef(false)
 
     useEffect(() => {
         if (!router.isReady) return
-        getUser()
         getTasks()
     }, [router.isReady])
 
@@ -47,8 +41,13 @@ export default function TaskManagementPage() {
             const tasksFetched = await apiCall('GET', 'tasks', null, true)
             setTasks(tasksFetched)
             isNewTaskAdded.current = true
-        } catch (error) {
-            console.error(error)
+        } catch (error: any) {
+            if (error.response && error.response.status === 401) {
+                // Unauthorized, redirect to Login page
+                router.push('/auth/signin');
+            } else {
+                console.error(error);
+            }
         }
     }
 
@@ -94,15 +93,6 @@ export default function TaskManagementPage() {
         }
     }
 
-    const getUser = async () => {
-        try {
-            const user = await apiCall('GET', 'profile', null, true)
-            setProfile(user)
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
     const handleMainInputChange = async (evt: any) => {
         setMainInput(evt.target.value)
     }
@@ -114,11 +104,6 @@ export default function TaskManagementPage() {
                 setMainInput('')
             }
         }
-    }
-
-    const logout = () => {
-        localStorage.removeItem('access_token')
-        router.push('/', undefined, { shallow: true })
     }
 
     return (
@@ -178,27 +163,7 @@ export default function TaskManagementPage() {
             </div>
 
             <div className="absolute bottom-10 left-10">
-                <div
-                    className="relative cursor-pointer"
-                    onClick={() => setIsVisible(!isVisible)}
-                >
-                    {isVisible ? (
-                        <FaUserInjured className="text-4xl" />
-                    ) : (
-                        <FaUser className="text-4xl" />
-                    )}
-                </div>
-                {isVisible && (
-                    <div className="flex-col w-fit bg-white absolute bottom-0 left-full rounded-md pl-3 pr-3">
-                        <div className="text-black pt-2 pb-1">
-                            {profile?.username}
-                        </div>
-                        <hr />
-                        <div className="flex justify-start text-red-700 pt-1 pb-2">
-                            <button onClick={logout}>Logout</button>
-                        </div>
-                    </div>
-                )}
+                <UserLayout />
             </div>
         </div>
     )
