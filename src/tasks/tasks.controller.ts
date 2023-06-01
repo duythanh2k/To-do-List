@@ -7,12 +7,14 @@ import {
     Param,
     Delete,
     UseGuards,
+    Res,
 } from '@nestjs/common'
 import { TasksService } from './tasks.service'
 import { Prisma, User as UserModel } from '@prisma/client'
 import { User } from 'src/users/users.decorator'
 import { TasksGuard } from './tasks.guard'
 import { SkipAuth } from 'src/auth/auth.decorator'
+import { Response } from 'express'
 
 @Controller('tasks')
 @UseGuards(TasksGuard)
@@ -46,7 +48,8 @@ export class TasksController {
     }
 
     @Delete(':id')
-    async remove(@Param('id') id: string) {
-        return await this.tasksService.remove(+id)
+    async remove(@Param('id') id: string, @Res() res: Response) {
+        await this.tasksService.remove(+id)
+        return res.status(204).json()
     }
 }
