@@ -6,8 +6,8 @@ import { Prisma } from '@prisma/client'
 export class TasksService {
     constructor(private readonly prisma: PrismaService) {}
 
-    create(user_id: number, todo: Prisma.TaskCreateInput) {
-        return this.prisma.task.create({
+    async create(user_id: number, todo: Prisma.TaskCreateInput) {
+        return await this.prisma.task.create({
             data: {
                 ...todo,
                 user: {
@@ -19,26 +19,26 @@ export class TasksService {
         })
     }
 
-    findAll(user_id: number) {
-        return this.prisma.task.findMany({ where: { user_id } })
+    async findAll(user_id: number) {
+        return await this.prisma.task.findMany({ where: { user_id } })
     }
 
-    findCompleted() {
-        return this.prisma.task.findMany()
+    async findCompleted() {
+        return await this.prisma.task.findMany()
     }
 
-    findOne(id: number) {
-        return this.prisma.task.findUnique({ where: { task_id: id } })
+    async findOne(id: number) {
+        return await this.prisma.task.findUnique({ where: { task_id: id } })
     }
 
-    update(id: number, task: Prisma.TaskUpdateInput) {
-        return this.prisma.task.update({
+    async update(id: number, task: Prisma.TaskUpdateInput) {
+        return await this.prisma.task.update({
             where: { task_id: id },
             data: task,
         })
     }
 
-    remove(id: number) {
-        return this.prisma.task.delete({ where: { task_id: id } })
+    async remove(id: number) {
+        await this.prisma.task.delete({ where: { task_id: id } })
     }
 }
