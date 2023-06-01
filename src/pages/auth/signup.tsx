@@ -39,10 +39,10 @@ export default function SignUp() {
                             Redirect to login page...
                         </h2>
                         <div className='w-full h-full flex justify-center'>
-                            <ReactLoading type='cylon' color='cyan' height={800} width={350} />
+                            <ReactLoading type='cylon' color='#5048e5' height={800} width={350} />
                         </div>
                     </div>
-                ): (
+                ) : (
                     <div className="flex justify-center w-3/12 h-3/5 bg-slate-200 shadow-inner shadow-black border-0 rounded-xl">
                         <form
                             className="flex flex-col justify-between align-middle w-11/12 pt-8 pb-4"
