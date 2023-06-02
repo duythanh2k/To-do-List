@@ -1,0 +1,25 @@
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+  db:
+    image: keinos/sqlite3:latest
+    restart: always
+    ports:
+      - 5555:5555
+      - 5432:5432
+    environment:
+      - DATABASE_URL=./api/prisma/dev.db
+    volumes:
+      - ./api/prisma:/prisma

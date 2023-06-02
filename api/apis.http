@@ -1,0 +1,77 @@
+@host = {{REACT_APP_API_URL}}
+@contentType = application/json
+@token = {{login.response.body.access_token}}
+
+### AUTHENTICATION
+
+### Register
+# @name register
+POST {{host}}/register
+content-type: {{contentType}}
+
+{
+     "username": "oldest",
+     "password": "password"
+}
+
+### Login
+# @name login
+POST {{host}}/login
+content-type: {{contentType}}
+
+{
+     "username": "stdre",
+     "password": "abc@123"
+}
+
+### Get Profile
+# @name profile
+GET {{host}}/profile
+content-type: {{contentType}}
+Authorization: Bearer {{token}}
+
+
+### TASKS
+
+### Create New Task
+# @name create
+POST {{host}}/tasks
+content-type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "title": "Rain",
+    "priority": "Medium",
+    "note": "It's a rainy day."
+}
+
+### List Tasks
+# @name list
+GET {{host}}/tasks
+content-type: {{contentType}}
+Authorization: Bearer {{token}}
+
+### Search Task
+# @name search
+GET {{host}}/tasks/4
+content-type: {{contentType}}
+Authorization: Bearer {{token}}
+
+### Update Task
+# @name update
+PATCH {{host}}/tasks/2
+content-type: {{contentType}}
+Authorization: Bearer {{token}}
+
+{
+    "title": "Sunny",
+    "priority": "Low",
+    "note": "It's a sunny day.",
+    "is_done": true
+}
+
+### Delete Task
+# @name delete
+DELETE {{host}}/tasks/1
+content-type: {{contentType}}
+Authorization: Bearer {{token}}
