@@ -14,12 +14,11 @@ services:
     ports:
       - 3000:3000
   db:
-    image: keinos/sqlite3:latest
+    image: postgres
     restart: always
     ports:
-      - 5555:5555
       - 5432:5432
     environment:
-      - DATABASE_URL=./api/prisma/dev.db
+      - DATABASE_URL="postgresql://postgres:0@localhost:5432/Todo?schema=public"
     volumes:
       - ./api/prisma:/prisma
