@@ -5,27 +5,27 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8000:8000
-    environment:
-      - DATABASE_URL=postgresql://postgres:0@db:5432/Todo?schema=public
     depends_on:
       - db
+    environment:
+      DATABASE_URL: postgresql://postgres:0@db:5432/postgres?schema=public
     # network_mode: "host"
 
-  client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-    ports:
-      - 3000:3000
+  # client:
+  #   build:
+  #     context: ./client
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 3000:3000
 
   db:
-    image: postgres
+    image: postgres:latest
     restart: always
     ports:
-      - 5432:5432
+      - 54432:5432
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=0
-      - POSTGRES_DB=Todo
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 0
+      POSTGRES_DB: postgres
     volumes:
       - ./api/prisma:/prisma
