@@ -17,14 +17,11 @@ COPY .env ./
 # COPY tsconfig.json file
 COPY tsconfig.json ./
 
-# Copy the rest of the API project files to the container
-COPY . .
-
 # Install project dependencies
 RUN npm install
 
 # Run prisma
-RUN npx prisma generate
+# RUN npx prisma generate
 
 # Set the environment variables
 ENV PORT=8000
