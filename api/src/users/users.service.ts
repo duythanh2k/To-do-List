@@ -21,4 +21,8 @@ export class UsersService {
             where: { username },
         })
     }
+
+    async findAll() {
+        return this.prisma.user.findMany()
+    }
 }
