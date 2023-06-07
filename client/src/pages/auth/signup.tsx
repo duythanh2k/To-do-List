@@ -12,7 +12,7 @@ export default function SignUp() {
     const [isSuccess, setIsSuccess] = useState(false)
     const [successfulMessage, setSuccessfulMessage] = useState('')
 
-    // // If the user is already authenticated, redirect to a todo list page
+    // If the user is already authenticated, redirect to a todo list page
     // useEffect(() => {
     //     if (!router.isReady) return
     //     if (isAuthenticated()) {
