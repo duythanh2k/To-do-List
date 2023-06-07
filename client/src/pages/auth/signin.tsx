@@ -12,21 +12,21 @@ export default function SignIn() {
     const [isSuccess, setIsSuccess] = useState(false)
 
     // If the user is already authenticated, redirect to a todo list page
-    useEffect(() => {
-        if (!router.isReady) return
-        if (isAuthenticated()) {
-            // If the user is already authenticated, redirect to a todo list page
-            router.push('/todos/tasks')
-        }
-    }, [router])
+    // useEffect(() => {
+    //     if (!router.isReady) return
+    //     if (isAuthenticated()) {
+    //         // If the user is already authenticated, redirect to a todo list page
+    //         router.push('/todos/tasks')
+    //     }
+    // }, [router])
 
-    const isAuthenticated = () => {
-        // Implement your authentication logic here
-        // You can check if the user has a valid token or session
-        // Return true if authenticated, false otherwise
-        const token = localStorage.getItem('token')
-        return !!token
-    }
+    // const isAuthenticated = () => {
+    //     // Implement your authentication logic here
+    //     // You can check if the user has a valid token or session
+    //     // Return true if authenticated, false otherwise
+    //     const token = localStorage.getItem('token')
+    //     return !!token
+    // }
 
     const handleSubmit = async (evt: any) => {
         evt.preventDefault()
