@@ -10,7 +10,10 @@ export class AuthService {
         private jwtService: JwtService
     ) {}
 
-    async signUp(username: string, pass: string): Promise<{ message: string; statusCode: number }> {
+    async signUp(
+        username: string,
+        pass: string
+    ): Promise<{ message: string; statusCode: number }> {
         const existedUser = await this.usersService.findByUsername(username)
         if (existedUser) {
             throw new BadRequestException()
@@ -21,7 +24,10 @@ export class AuthService {
             username,
             password: hashedPassword,
         })
-        return { message: 'User has successfully created!', statusCode: HttpStatus.CREATED }
+        return {
+            message: 'User has successfully created!',
+            statusCode: HttpStatus.CREATED,
+        }
     }
 
     async signIn(username: string, pass: string) {

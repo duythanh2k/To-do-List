@@ -1,12 +1,4 @@
-import {
-    Body,
-    Controller,
-    Get,
-    HttpCode,
-    HttpStatus,
-    Post,
-    Request,
-} from '@nestjs/common'
+import { Controller, Get } from '@nestjs/common'
 import { SkipAuth } from '../auth/auth.decorator'
 import { UsersService } from './users.service'
 

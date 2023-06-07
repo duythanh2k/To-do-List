@@ -1,6 +1,6 @@
 import { apiCall } from '@/pages/api/apiCall'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { FaUser, FaUserInjured } from 'react-icons/fa'
 
 // Define data type
@@ -15,12 +15,7 @@ export default function LayoutAuthenticated() {
     const [profile, setProfile] = useState<User>()
     const [isVisible, setIsVisible] = useState(false)
 
-    useEffect(() => {
-        if (!router.isReady) return
-        getUser()
-    }, [router.isReady])
-
-    const getUser = async () => {
+    const getUser = useCallback(async () => {
         try {
             const user = await apiCall('GET', 'profile', null, true)
             setProfile(user)
@@ -32,7 +27,12 @@ export default function LayoutAuthenticated() {
                 console.error(error);
             }
         }
-    }
+    }, [router])
+
+    useEffect(() => {
+        if (!router.isReady) return
+        getUser()
+    }, [router, getUser])
 
     const logout = () => {
         localStorage.removeItem('access_token')

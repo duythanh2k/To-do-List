@@ -10,7 +10,7 @@ import {
     Res,
 } from '@nestjs/common'
 import { TasksService } from './tasks.service'
-import { Prisma, User as UserModel } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 import { User } from 'src/users/users.decorator'
 import { TasksGuard } from './tasks.guard'
 import { SkipAuth } from 'src/auth/auth.decorator'
@@ -22,7 +22,10 @@ export class TasksController {
     constructor(private readonly tasksService: TasksService) {}
 
     @Post()
-    async create(@User() user_id: string, @Body() task: Prisma.TaskCreateInput) {
+    async create(
+        @User() user_id: string,
+        @Body() task: Prisma.TaskCreateInput
+    ) {
         return await this.tasksService.create(+user_id, task)
     }
 
@@ -43,7 +46,10 @@ export class TasksController {
     }
 
     @Patch(':id')
-    async update(@Param('id') id: string, @Body() task: Prisma.TaskUpdateInput) {
+    async update(
+        @Param('id') id: string,
+        @Body() task: Prisma.TaskUpdateInput
+    ) {
         return await this.tasksService.update(+id, task)
     }
 

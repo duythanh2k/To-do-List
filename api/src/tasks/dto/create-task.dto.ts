@@ -25,7 +25,7 @@ export class CreateTaskDto {
     note?: string
 
     @IsBoolean()
-    is_done: boolean = false
+    is_done = false
 
     user_id: number
 }

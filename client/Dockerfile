@@ -20,9 +20,6 @@ COPY . .
 # Install project dependencies
 RUN npm install
 
-# Run lint command
-RUN npm run lint
-
 # Set the environment variables
 ENV PORT=3000
 

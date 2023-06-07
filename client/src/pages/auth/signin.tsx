@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { apiCall } from '../api/apiCall'
 import ReactLoading from 'react-loading';
+import Link from 'next/link';
 
 export default function SignIn() {
     const router = useRouter()
@@ -9,6 +10,23 @@ export default function SignIn() {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const [isSuccess, setIsSuccess] = useState(false)
+
+    // If the user is already authenticated, redirect to a todo list page
+    useEffect(() => {
+        if (!router.isReady) return
+        if (isAuthenticated()) {
+            // If the user is already authenticated, redirect to a todo list page
+            router.push('/todos/tasks')
+        }
+    }, [router])
+
+    const isAuthenticated = () => {
+        // Implement your authentication logic here
+        // You can check if the user has a valid token or session
+        // Return true if authenticated, false otherwise
+        const token = localStorage.getItem('token')
+        return !!token
+    }
 
     const handleSubmit = async (evt: any) => {
         evt.preventDefault()
@@ -83,13 +101,13 @@ export default function SignIn() {
                                 </button>
                             </div>
                             <p className="text-black italic">
-                                Don't have account yet?{' '}
-                                <a
+                                Do not have account yet?{' '}
+                                <Link
                                     className="text-sky-500 hover:underline"
                                     href="/auth/signup"
                                 >
                                     Create now!
-                                </a>
+                                </Link>
                             </p>
                         </form>
                     </div>

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { BsFillCheckSquareFill, BsHourglassSplit } from 'react-icons/bs'
 import { FaTrashAlt } from 'react-icons/fa'
 import { apiCall } from '../api/apiCall'
@@ -23,20 +23,7 @@ export default function TaskManagementPage() {
     const scrollRef = useRef<null | HTMLDivElement>(null)
     const isNewTaskAdded = useRef(false)
 
-    useEffect(() => {
-        if (!router.isReady) return
-        getTasks()
-    }, [router.isReady])
-
-    useEffect(() => {
-        if (isNewTaskAdded.current) {
-            // Scroll to the bottom only when reload the page or a new task is added
-            scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
-            isNewTaskAdded.current = false
-        }
-    }, [tasks])
-
-    const getTasks = async () => {
+    const getTasks = useCallback(async () => {
         try {
             const tasksFetched = await apiCall('GET', 'tasks', null, true)
             setTasks(tasksFetched)
@@ -49,7 +36,7 @@ export default function TaskManagementPage() {
                 console.error(error);
             }
         }
-    }
+    }, [router])
 
     const handleAddTask = async (title: string) => {
         try {
@@ -92,6 +79,19 @@ export default function TaskManagementPage() {
             console.error(error)
         }
     }
+
+    useEffect(() => {
+        if (!router.isReady) return
+        getTasks()
+    }, [router.isReady, getTasks])
+
+    useEffect(() => {
+        if (isNewTaskAdded.current) {
+            // Scroll to the bottom only when reload the page or a new task is added
+            scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
+            isNewTaskAdded.current = false
+        }
+    }, [tasks])
 
     const handleMainInputChange = async (evt: any) => {
         setMainInput(evt.target.value)

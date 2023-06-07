@@ -23,9 +23,6 @@ RUN npm install
 # Run prisma
 # RUN npx prisma generate
 
-# Run lint command
-RUN npm run lint
-
 # Set the environment variables
 ENV PORT=8000
 

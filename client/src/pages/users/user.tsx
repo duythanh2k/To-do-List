@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { apiCall } from '../api/apiCall'
 
 type User = {
@@ -12,12 +12,7 @@ export default function User() {
     const router = useRouter()
     const [profile, setProfile] = useState<User>()
 
-    useEffect(() => {
-        if (!router.isReady) return
-        getUser()
-    }, [router.isReady])
-
-    const getUser = async () => {
+    const getUser = useCallback(async () => {
         try {
             const user = await apiCall('GET', 'profile', null, true)
             if (user) {
@@ -28,7 +23,12 @@ export default function User() {
         } catch (error) {
             console.error(error)
         }
-    }
+    }, [router])
+
+    useEffect(() => {
+        if (!router.isReady) return
+        getUser()
+    }, [router.isReady, getUser])
 
     return (
         <>
