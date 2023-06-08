@@ -1,8 +1,28 @@
-import axios from 'axios'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 export default function Home() {
+    const router = useRouter()
+
+    // If the user is already authenticated, redirect to a todo list page
+    useEffect(() => {
+        if (!router.isReady) return
+        if (isAuthenticated()) {
+            // If the user is already authenticated, redirect to a todo list page
+            router.push('/todos/tasks')
+        }
+    }, [router.isReady])
+
+    const isAuthenticated = () => {
+        // Implement your authentication logic here
+        // You can check if the user has a valid token or session
+        // Return true if authenticated, false otherwise
+        const token = localStorage.getItem('access_token')
+        return !!token
+    }
+
     return (
         <main
             className={`flex flex-col items-center justify-between p-24 h-screen`}
